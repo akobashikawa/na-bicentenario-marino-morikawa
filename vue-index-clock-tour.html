@@ -1,0 +1,197 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1024" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Marino Morikawa - Clock</title>
+
+  <meta name="author" content="Antonio Kobashikawa" />
+
+  <link
+    href="//fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic"
+    rel="stylesheet" />
+
+  <link href="css/impress-demo.css" rel="stylesheet" />
+  <link href="css/impress-common.css" rel="stylesheet" />
+
+</head>
+
+<body class="impress-not-supported">
+
+  <div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified
+      version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+  </div>
+
+  <div id="app">
+
+    <div ref="impress" id="impress" data-transition-duration="1000" data-width="1200" data-height="720" data-max-scale="3"
+      data-min-scale="0" data-perspective="1000">
+  
+      <div v-for="(item, key) of clock" :key="key" class="step slide" :data-x="item.x" :data-y="item.y" :data-z="item.z" :data-rotate="item.rotate">
+        <img :src="item.image" height="620" />
+      </div>
+  
+      <div id="overview" class="step" data-x="0" data-y="0" data-z="0" data-scale="10"> </div>
+  
+    </div>
+  
+    <div id="impress-toolbar" v-if="impress">
+      <button @click="impress.goto('overview')">General</button>
+      <button @click="prev">Anterior</button>
+      {{ step }}
+      <button @click="next">Siguiente</button>
+    </div>
+  
+  </div>
+
+
+  <div class="hint">
+    <p>Use a spacebar or arrow keys to navigate. <br />
+      Press 'P' to launch speaker console.</p>
+  </div>
+  <script>
+    if ("ontouchstart" in document.documentElement) {
+      document.querySelector(".hint").innerHTML = "<p>Swipe left or right to navigate</p>";
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+  <script src="js/impress.js"></script>
+  
+  <script>
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        impress: null,
+        step: '',
+
+        items: [
+          {
+            image: './img/marino-morikawa-1.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-2.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-3.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-4.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-1.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-2.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-3.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-4.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-1.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-2.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-3.png',
+            title: 'Marino Morikawa',
+          },
+          {
+            image: './img/marino-morikawa-4.png',
+            title: 'Marino Morikawa',
+          },
+        ],
+
+        
+        tour: [0, 2, 4, 6, 8, 10],
+        currentIndex: 0,
+      },
+      computed: {
+        simple() {
+          return this.items.map((item, i) => {
+            item.x = i * 1000;
+            item.y = 0;
+            item.z = 0;
+            return item;
+          });
+        },
+        clock() {
+          return this.items.map((item, i) => {
+            const ang = i * 30;
+            item.x = 2000 * Math.cos(ang * Math.PI / 180);
+            item.y = 2000 * Math.sin(ang * Math.PI / 180);
+            item.z = 0;
+            item.rotate = ang;
+            return item;
+          });
+        },
+        
+      },
+      mounted() {
+        this.initImpress();
+      },
+      methods: {
+        initImpress() {
+          this.impress = impress();
+          this.impress.init();
+
+          const rootElement = this.$refs['impress'];
+          const that = this;
+
+          rootElement.addEventListener("impress:stepenter", function (event) {
+            const currentStep = event.target;
+            console.log("Entered the Step Element '" + currentStep.id + "'");
+            that.step = currentStep.id;
+          });
+
+          rootElement.addEventListener("impress:stepleave", function (event) {
+            var currentStep = event.target;
+            var nextStep = event.detail.next;
+            console.log("Left the Step Element '" + currentStep.id + "' and about to enter '" + nextStep.id);
+          });
+        },
+        prev() {
+          this.currentIndex--;
+          if (this.currentIndex < 0) {
+            this.currentIndex = this.tour.length;
+          }
+          this.impress.goto(this.tour[this.currentIndex]);
+        },
+        next() {
+          this.currentIndex++;
+          if (this.currentIndex > (this.tour.lenght - 1)) {
+            this.currentIndex = 0;
+          }
+          this.impress.goto(this.tour[this.currentIndex]);
+        },
+      },
+    });
+
+    // app.initImpress();
+  
+  </script>
+
+</body>
+
+</html>
