@@ -124,7 +124,7 @@
         ],
 
         
-        tour: [0, 2, 4, 6, 8, 10],
+        tour: [1, 2, 3, 4],
         currentIndex: 0,
       },
       computed: {
@@ -174,16 +174,16 @@
         prev() {
           this.currentIndex--;
           if (this.currentIndex < 0) {
-            this.currentIndex = this.tour.length;
+            this.currentIndex = this.tour.length - 1;
           }
-          this.impress.goto(this.tour[this.currentIndex]);
+          this.impress.goto('step-' + this.tour[this.currentIndex]);
         },
         next() {
           this.currentIndex++;
-          if (this.currentIndex > (this.tour.lenght - 1)) {
+          if (this.currentIndex > (this.tour.length - 1)) {
             this.currentIndex = 0;
           }
-          this.impress.goto(this.tour[this.currentIndex]);
+          this.impress.goto('step-' + this.tour[this.currentIndex]);
         },
       },
     });

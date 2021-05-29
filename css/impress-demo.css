@@ -168,6 +168,7 @@ a:focus {
     width: 900px;
     padding: 40px;
     margin: 20px auto;
+    text-align: center;
 
     -webkit-box-sizing: border-box;
     -moz-box-sizing:    border-box;
